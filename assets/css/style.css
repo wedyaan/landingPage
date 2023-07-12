@@ -453,12 +453,13 @@ section {
   transition: 0.5s;
   margin: 10px 0 0 0;
   color: #fff;
-  background: #47b2e4;
+ background: #039006;
+    color: black;
+    font-size: 25px;
+    font-weight: 700;
 }
 
-#hero .btn-get-started:hover {
-  background: #209dd8;
-}
+ 
 
 #hero .btn-watch-video {
   font-size: 16px;
