@@ -390,6 +390,21 @@
           </div>
         </div>
         </form>
+        <?php
+  if(isset($_POST['submit'])) {
+    $to = "youremail@example.com"; // البريد الإلكتروني الذي تريد إرسال البريد إليه
+    $subject = "رسالة من " . $_POST['name']; // عنوان البريد الإلكتروني
+    $message = $_POST['message']; // نص البريد الإلكتروني
+    $headers = "From: " . $_POST['email']; // عنوان البريد الإلكتروني الذي سيظهر كمرسل للبريد الإلكتروني
+
+    // إرسال البريد الإلكتروني باستخدام دالة mail()
+    if(mail($to, $subject, $message, $headers)) {
+      echo "<p>تم إرسال البريد الإلكتروني بنجاح.</p>";
+    } else {
+      echo "<p>حدث خطأ أثناء إرسال البريد الإلكتروني.</p>";
+    }
+  }
+  ?>
       </div>
     </div>
   </section>
