@@ -1,41 +1,69 @@
 <?php
-  /**
-  * Requires the "PHP Email Form" library
-  * The "PHP Email Form" library is available only in the pro version of the template
-  * The library should be uploaded to: vendor/php-email-form/php-email-form.php
-  * For more info and help: https://bootstrapmade.com/php-email-form/
-  */
+//Import PHPMailer classes into the global namespace
+//These must be at the top of your script, not inside a function
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
-  // Replace contact@example.com with your real receiving email address
-  $receiving_email_address = 'wedyan-14@hotmail.com';
+//Load Composer's autoloader
+require '../vendor/autoload.php';
 
-  if( file_exists($php_email_form = '../assets/vendor/php-email-form/php-email-form.php' )) {
-    include( $php_email_form );
-  } else {
-    die( 'Unable to load the "PHP Email Form" Library!');
-  }
+// Create a new PHPMailer instance
+$mail = new PHPMailer;
 
-  $contact = new PHP_Email_Form;
-  $contact->ajax = true;
-  
-  $contact->to = $receiving_email_address;
-  $contact->from_name = $_POST['name'];
-  $contact->from_email = $_POST['email'];
-  $contact->subject = $_POST['subject'];
+// Configure the SMTP settings for Gmail
+$mail->isSMTP();
+$mail->Host = 'smtp.gmail.com';
+$mail->SMTPAuth = true;
+$mail->Username = 'smartsolution496@gmail.com';  
+$mail->Password = 'sxqajniedvfqoqty';
+$mail->Port = 587;
+$mail->SMTPSecure = 'tls';
 
-  // Uncomment below code if you want to use SMTP to send emails. You need to enter your correct SMTP credentials
-  /*
-  $contact->smtp = array(
-    'host' => 'example.com',
-    'username' => 'example',
-    'password' => 'pass',
-    'port' => '587'
-  );
-  */
+// Set the sender and recipient
+$mail->setFrom('smartsolution496@gmail.com', 'Smart SL');  
+$mail->addAddress('marwenayarimail@gmail.com','Marwen');
+$mail->AddAddress('wedyaan1414@gmail.com', 'Wedian');
+$mail->AddAddress('wedyan-14@hotmail.com', 'Wedian Hotmail');
+if (isset($_POST['submit'])) {
+  $name = $_POST['name'];
+  $lastName = $_POST['lastName'];
+  $email = $_POST['email'];
+  $productType = $_POST['productType'];
+  $message = $_POST['message'];
+  // Set the email subject and body
+  $mail->Subject = 'Contact Form Submission';
+  $htmlBody = '
+      <head>
+        <style>
+          div#mailcontent {
+            direction: rtl;
+            background: #e3ecef;
+            border-radius: 10px;
+            padding: 5px 15px;
+            text-align: center;
+          }
+          h2 {color: gray;}
+        </style>
+      </head>
+      <div id="mailcontent">
+        <h2>'. $productType . '</h2>
+        <h2>' . $name . ' ' . $lastName. '</h2>
+        <h3>' . $email. '</h3>
+        <p>' . $message . '</p>
+      </div>
+  ';
+  $mail->msgHTML($htmlBody);
+}
 
-  $contact->add_message( $_POST['name'], 'From');
-  $contact->add_message( $_POST['email'], 'Email');
-  $contact->add_message( $_POST['message'], 'Message', 10);
-
-  echo $contact->send();
+// Send the email
+$mailsSent = $mail->send();
+if (!$mailsSent) {
+    echo 'Message could not be sent.';
+    echo 'Mailer Error: ' . $mail->ErrorInfo;
+    // header('Location: ../?mailSent=false#contact');
+} else {
+    echo 'Message sent successfully.';
+    header('Location: ../?mailSent=true#contact');
+}
 ?>

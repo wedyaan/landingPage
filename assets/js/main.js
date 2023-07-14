@@ -126,4 +126,16 @@
       mirror: false,
     });
   });
+  let params = new URLSearchParams(window.location.search);
+  let mailSent = params.get("mailSent");
+  const messageText = document.getElementById("message");
+  if (mailSent) {
+    if (mailSent == "true") {
+      messageText.className = "success";
+      messageText.innerHTML = "تم ارسال رسالتك بنجاح";
+    } else {
+      messageText.className = "fail";
+      messageText.innerHTML = "تعذر ارسال الرسالة، الرجاء المحاولة لاحقا";
+    }
+  }
 })();
